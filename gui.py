@@ -6,22 +6,37 @@ import sys
 label = PySimpleGUI.Text('Type in a Todo')
 input_box = PySimpleGUI.InputText(tooltip='Enter To Do Here', key='todo')
 add_button = PySimpleGUI.Button('Add')
+list_box = PySimpleGUI.Listbox(values=get_todos(), key='todos', enable_events=True, size =[45, 10])
+edit_button = PySimpleGUI.Button("Edit")
 
-window = PySimpleGUI.Window('My To-Do App', layout=[[label], [input_box, add_button]], 
+window = PySimpleGUI.Window('My To-Do App', layout=[[label], [input_box, add_button],[list_box, edit_button]], 
                             font=('Helvetica', 10))
 while True:
     event, values = window.read()
+    print(event)
+    print(values) 
     match event:
-        case 'Add':
+        case 'Add': 
           todos = get_todos()
-          new_todo= values['todo'] + '\n'
+          new_todo = values['todo'] + '\n'
           todos.append(new_todo) 
           write_todos(todos) 
+          window['todos'].update(values=todos)
+        case 'Edit': 
+                todo_to_edit = values['todos'][0]
+                new_todo = values['todo'] +'\n'
+                existing_todos = get_todos()
+                index = existing_todos.index(todo_to_edit)
+                existing_todos[index] = new_todo
+                write_todos(existing_todos)
+                window['todos'].update(values=existing_todos) 
+        case 'todos':
+            window['todo'].update(value=values['todos'][0])
+    
         case PySimpleGUI.WIN_CLOSED:
           break
-# event, values = window.read()  
-# print(event)
-# print(values) 
+
+
 window.close()
 
 
