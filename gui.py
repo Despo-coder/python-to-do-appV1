@@ -8,9 +8,14 @@ input_box = PySimpleGUI.InputText(tooltip='Enter To Do Here', key='todo')
 add_button = PySimpleGUI.Button('Add')
 list_box = PySimpleGUI.Listbox(values=get_todos(), key='todos', enable_events=True, size =[45, 10])
 edit_button = PySimpleGUI.Button("Edit")
+complete_button = PySimpleGUI.Button('Complete')
+exit_button = PySimpleGUI.Button('Exit')
 
-window = PySimpleGUI.Window('My To-Do App', layout=[[label], [input_box, add_button],[list_box, edit_button]], 
+
+window = PySimpleGUI.Window('My To-Do App', layout=[[label], [input_box, add_button]
+                                                    ,[list_box, edit_button, complete_button], [exit_button]], 
                             font=('Helvetica', 10))
+
 while True:
     event, values = window.read()
     print(event)
@@ -30,13 +35,20 @@ while True:
                 existing_todos[index] = new_todo
                 write_todos(existing_todos)
                 window['todos'].update(values=existing_todos) 
+        case 'Complete': 
+                todo_to_complete = values['todos'][0]
+                existing_todos = get_todos()
+                existing_todos.remove(todo_to_complete)
+                write_todos(existing_todos)
+                window['todos'].update(values=existing_todos) 
+                window['todo'].update(value='') 
+        case 'Exit':
+            break
         case 'todos':
             window['todo'].update(value=values['todos'][0])
     
         case PySimpleGUI.WIN_CLOSED:
           break
-
-
 window.close()
 
 
