@@ -1,10 +1,6 @@
 Wash
 Cooking
 Add Exit Button
-Replace The Space
 Clean
-Car Repairs
 Replace The Space
 Updatting a new todo
-Re Adding a todo
-Add This to the last
